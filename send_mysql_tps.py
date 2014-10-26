@@ -1,7 +1,6 @@
 __author__ = 'seckcoder'
 
 
-import config
 import boto.ec2.cloudwatch
 import subprocess
 import time
@@ -38,6 +37,7 @@ while True:
         if prev_queries is not None:
             tps = (queries - 4 - prev_queries) / (uptime - prev_uptime)
             sendTPS(tps)
+            print tps
         prev_queries = queries
         prev_uptime = uptime
         # tps = int(output.split()[3])
