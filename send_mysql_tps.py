@@ -38,6 +38,7 @@ print "start send..."
 while True:
     try:
         print "inprocess...."
+        sys.stdout.flush()
         output = subprocess.check_output("mysql -u %s -p%s -e \"show status like 'Queries'; show status like 'Uptime';\"" % (uname, password), shell=True)
         groups = output.split()
         queries = int(groups[3])
