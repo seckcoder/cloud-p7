@@ -37,6 +37,7 @@ password = "db15319root"
 print "start send..."
 while True:
     try:
+        print "inprocess...."
         output = subprocess.check_output("mysql -u %s -p%s -e \"show status like 'Queries'; show status like 'Uptime';\"" % (uname, password), shell=True)
         groups = output.split()
         queries = int(groups[3])
@@ -51,4 +52,5 @@ while True:
         # tps = int(output.split()[3])
         time.sleep(1)
     except KeyboardInterrupt:
+        print "keyboard interrupt"
         break
