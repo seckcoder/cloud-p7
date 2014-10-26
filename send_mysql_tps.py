@@ -21,13 +21,14 @@ max_tps = 500
 
 def sendTPS(tps):
     cf = metric_base.copy()
-    print tps
     cf.update(value = (float(tps) / float(max_tps)) * 100,
               timestamp = datetime.utcnow())
     cw.put_metric_data(**cf)
 
 prev_queries = None
 prev_uptime = None
+
+print "start send..."
 while True:
     try:
         output = subprocess.check_output("mysql -u echo -p15319 -e \"show status like 'Queries'; show status like 'Uptime';\"", shell=True)
