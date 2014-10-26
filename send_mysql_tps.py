@@ -5,6 +5,7 @@ import boto.ec2.cloudwatch
 import subprocess
 import time
 from datetime import datetime
+import sys
 
 region = "us-east-1"
 cw = boto.ec2.cloudwatch.connect_to_region(region)
@@ -27,10 +28,16 @@ def sendTPS(tps):
 prev_queries = None
 prev_uptime = None
 
+#uname = "echo"
+#password = "15319"
+
+uname = "root"
+password = "db15319root"
+
 print "start send..."
 while True:
     try:
-        output = subprocess.check_output("mysql -u echo -p15319 -e \"show status like 'Queries'; show status like 'Uptime';\"", shell=True)
+        output = subprocess.check_output("mysql -u %s -p%s -e \"show status like 'Queries'; show status like 'Uptime';\"" % (uname, password), shell=True)
         groups = output.split()
         queries = int(groups[3])
         uptime = int(groups[7])
@@ -38,6 +45,7 @@ while True:
             tps = (queries - 4 - prev_queries) / (uptime - prev_uptime)
             sendTPS(tps)
             print tps
+            sys.stdout.flush()
         prev_queries = queries
         prev_uptime = uptime
         # tps = int(output.split()[3])
